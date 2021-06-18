@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Forbes.Multiplayer
 {
-    public class GameManager : MonoBehaviour
+    public class MPGameManager : MonoBehaviour
     {
         void OnGUI()
         {
@@ -15,7 +15,6 @@ namespace Forbes.Multiplayer
             else
             {
                 StatusLabels();
-                SubmitNewPosition();
             }
 
             GUILayout.EndArea();
