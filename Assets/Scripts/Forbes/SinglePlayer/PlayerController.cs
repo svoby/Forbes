@@ -2,7 +2,7 @@
 using Forbes.Inputs;
 using Forbes.Cameras;
 
-namespace Forbes
+namespace Forbes.SinglePlayer
 {
     [RequireComponent(typeof(MonsterController))]
     [RequireComponent(typeof(IInputType))]
@@ -11,12 +11,6 @@ namespace Forbes
     {
         // Crosshair
         #region Variables
-
-        [Header("Crosshair")]
-        public GameObject Crosshair;
-        public float CrosshairMaxDistance = 10f;
-        public float CrosshairLerp = 0.3f;
-        float _crosshairLerpTo = 5f;
 
         [Header("Camera")]
         public CameraMode CameraMode;

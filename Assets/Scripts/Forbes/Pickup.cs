@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Forbes.SinglePlayer;
 
 namespace Forbes
 {

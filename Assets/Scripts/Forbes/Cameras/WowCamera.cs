@@ -1,5 +1,6 @@
 using UnityEngine;
 using Forbes.Inputs;
+using Forbes.SinglePlayer;
 
 namespace Forbes.Cameras
 {

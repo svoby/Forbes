@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Forbes.SinglePlayer;
 
 namespace Forbes
 {

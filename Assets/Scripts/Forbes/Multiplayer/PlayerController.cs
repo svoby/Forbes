@@ -4,11 +4,11 @@ using UnityEngine;
 using Forbes.Inputs;
 using Forbes.Cameras;
 
-namespace Forbes
+namespace Forbes.Multiplayer
 {
     [RequireComponent(typeof(MonsterController))]
     [RequireComponent(typeof(NetworkObject))]
-    public class MP_PlayerController : NetworkBehaviour, IPlayerController
+    public class PlayerController : NetworkBehaviour, IPlayerController
     {
         // Crosshair
         #region Variables
@@ -30,14 +30,17 @@ namespace Forbes
             }
         }
 
-        InputFrame InputFrame;
+        Forbes.Inputs.InputFrame InputFrame;
 
         void Awake()
         {
-            GameManager.Instance.OnLocalPlayerJoined += (IPlayerController _pc) => GameManager.Instance.CameraController.SetTarget(_pc.MC.gameObject);
-            GameManager.Instance.OnLocalPlayerJoined += (IPlayerController _pc) => GameManager.Instance.CameraController.SetMode(CameraMode);
-            GameManager.Instance.OnLocalPlayerJoined += (IPlayerController _pc) => GameManager.Instance.InputController.SetType = _pc.MC.GetComponent<IInputType>();
-            GameManager.Instance.OnLocalPlayerJoined += (IPlayerController _pc) => GameManager.Instance.GameLogic = _pc.MC.GetComponent<IGameLogic>();
+            Forbes.SinglePlayer.GameManager.Instance.OnLocalPlayerJoined += (IPlayerController _pc) =>
+            {
+                Forbes.SinglePlayer.GameManager.Instance.CameraController.SetTarget(_pc.MC.gameObject);
+                Forbes.SinglePlayer.GameManager.Instance.CameraController.SetMode(CameraMode);
+                Forbes.SinglePlayer.GameManager.Instance.InputController.SetType = _pc.MC.GetComponent<IInputType>();
+                Forbes.SinglePlayer.GameManager.Instance.GameLogic = _pc.MC.GetComponent<IGameLogic>();
+            };
         }
 
         void Start()
@@ -45,18 +48,18 @@ namespace Forbes
             if (!IsLocalPlayer)
                 return;
 
-            GameManager.Instance.LocalPlayer = this;
+            Forbes.SinglePlayer.GameManager.Instance.LocalPlayer = this;
         }
 
         void FixedUpdate()
         {
             if (IsLocalPlayer)
             {
-                InputFrame = GameManager.Instance.InputController.GetInputFrame(gameObject);
+                InputFrame = Forbes.SinglePlayer.GameManager.Instance.InputController.GetInputFrame(gameObject);
                 MC.ApplyInputs(InputFrame);
 
                 if (!IsServer)
-                    SubmitInputRequestServerRpc(new MP_InputFrame
+                    SubmitInputRequestServerRpc(new InputFrame
                     {
                         Horizontal = InputFrame.Horizontal,
                         Vertical = InputFrame.Vertical,
@@ -68,7 +71,7 @@ namespace Forbes
         }
 
         [ServerRpc]
-        void SubmitInputRequestServerRpc(MP_InputFrame _inputFrame)
+        void SubmitInputRequestServerRpc(InputFrame _inputFrame)
         {
             MC.ApplyInputs(new InputFrame
             {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Forbes.SinglePlayer;
 
 namespace Forbes.Inputs
 {

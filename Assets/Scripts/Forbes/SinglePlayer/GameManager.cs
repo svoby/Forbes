@@ -3,7 +3,7 @@ using Forbes.Cameras;
 using Forbes.Inputs;
 using Forbes.Spawning;
 
-namespace Forbes
+namespace Forbes.SinglePlayer
 {
     public class GameManager
     {
