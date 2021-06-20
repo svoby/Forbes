@@ -13,7 +13,7 @@ namespace Forbes.Tests
             {
                 Horizontal = _input.Horizontal,
                 Vertical = _input.Vertical,
-                Jump = false,
+                Jump = _input.Jump,
                 Rotation = 0,
                 Fire = 0,
                 Timestamp = Time.time

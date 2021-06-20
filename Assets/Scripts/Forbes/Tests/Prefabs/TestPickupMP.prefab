@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 7640521136006036443}
   - component: {fileID: 7640521136006036440}
   - component: {fileID: 7640521136006036441}
-  - component: {fileID: 7640521136006036422}
+  - component: {fileID: 8300384152571493926}
+  - component: {fileID: 723907038689107931}
+  - component: {fileID: 60896456636224285}
   m_Layer: 0
-  m_Name: TestPickup
+  m_Name: TestPickupMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,7 +98,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7640521136006036422
+--- !u!114 &8300384152571493926
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,7 +107,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 7640521136006036423}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bdd6f2b65f414c809796b871c2054ae, type: 3}
+  m_Script: {fileID: 11500000, guid: f411f92f5249c439f8b89d35b53e37e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SoundPickup: {fileID: 0}
+--- !u!114 &723907038689107931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640521136006036423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a511cfd160b41008bd1a6db93e5b6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RespawnTime: 2
+  SoundRespawn: {fileID: 0}
+--- !u!114 &60896456636224285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640521136006036423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkInstanceId: 0
+  PrefabHash: 15524912541175260458
+  PrefabHashGenerator: TestPickupMP
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0

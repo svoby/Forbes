@@ -103,9 +103,6 @@ namespace Forbes.Inputs
             State.Key1 = Input.inputString == "+";
             State.Key2 = Input.inputString == "ě";
             State.Key3 = Input.inputString == "š";
-
-            if (Input.GetKey(KeyCode.AltGr) && Input.GetKey(KeyCode.Alpha2))
-                Debug.Log("KeyCode down: AltGr & 2 equals ě");
         }
 
         public void SetTypeID(int _id)

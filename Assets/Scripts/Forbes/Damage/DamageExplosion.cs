@@ -39,9 +39,10 @@ namespace Forbes.Damage
 
                 if (finalDamage >= 1)
                 {
-                    var destructable = collider.transform.GetComponent<Destructable>();
+                    // var destructable = collider.transform.GetComponent<Destructable>();
+                    var destructable = collider.transform.GetComponent<Forbes.SinglePlayer.Destructable>();
                     if (destructable != null)
-                        destructable.TakeDamage((int)finalDamage, null);
+                        destructable.TakeDamage((int)finalDamage);
 
                     Shaker shaker = obj.GetComponent<Shaker>();
                     if (shaker)

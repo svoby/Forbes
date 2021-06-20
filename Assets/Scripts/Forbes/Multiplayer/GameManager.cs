@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Forbes.Multiplayer
 {
-    public class MPGameManager : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
         void OnGUI()
         {
@@ -50,6 +50,18 @@ namespace Forbes.Multiplayer
                     //     player.Move();
                     // }
                 }
+            }
+        }
+
+        private static Spawner m_Spawner;
+        public static Spawner Spawner
+        {
+            get
+            {
+                if (m_Spawner == null)
+                    m_Spawner = new Spawner();
+
+                return m_Spawner;
             }
         }
     }

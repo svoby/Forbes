@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Forbes.Cameras;
 using Forbes.Inputs;
-using Forbes.Spawning;
+using Forbes.Utils;
 
 namespace Forbes.SinglePlayer
 {
@@ -9,7 +9,7 @@ namespace Forbes.SinglePlayer
     {
         public event System.Action<IPlayerController> OnLocalPlayerJoined;
 
-        private GameObject gameObject;
+        protected GameObject gameObject;
 
         private static GameManager m_Instance;
         public static GameManager Instance
@@ -21,7 +21,7 @@ namespace Forbes.SinglePlayer
                     m_Instance = new GameManager();
                     m_Instance.gameObject = new GameObject("_gameManager");
                     m_Instance.gameObject.AddComponent<InputController>();
-                    m_Instance.gameObject.AddComponent<Timer>();
+                    m_Instance.gameObject.AddComponent<Utils.Timer>();
                     m_Instance.gameObject.AddComponent<CameraController>();
                 }
                 return m_Instance;
@@ -92,8 +92,8 @@ namespace Forbes.SinglePlayer
             }
         }
 
-        private Spawner m_Spawner;
-        public Spawner Spawner
+        private static Spawner m_Spawner;
+        public static Spawner Spawner
         {
             get
             {

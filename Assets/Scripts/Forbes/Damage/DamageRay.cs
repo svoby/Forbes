@@ -23,10 +23,10 @@ namespace Forbes.Damage
                 if (PhysicXTarget != null)
                     PhysicXTarget.AddForce(transform.forward * PushForce);
 
-                var destructable = _hitInfo.collider.transform.GetComponent<Destructable>();
+                var destructable = _hitInfo.collider.transform.GetComponent<Forbes.SinglePlayer.Destructable>();
                 if (destructable != null)
                 {
-                    destructable.TakeDamage(Damage, DamageOwner);
+                    destructable.TakeDamage(Damage);
                 }
                 else
                 {

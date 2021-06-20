@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Forbes.Spawning
+namespace Forbes.SinglePlayer
 {
     public interface ISpawn
     {

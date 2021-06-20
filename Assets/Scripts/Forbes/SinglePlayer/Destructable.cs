@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using Forbes.SinglePlayer;
 
-namespace Forbes
+namespace Forbes.SinglePlayer
 {
-    public class Destructable : MonoBehaviour
+    public class Destructable : MonoBehaviour, Forbes.Damage.IDestructable
     {
-        [SerializeField] int hitPoints;
+        [SerializeField] int m_HitPoints = 100;
         public event System.Action OnDeath;
         public event System.Action OnDamageReceived;
 
@@ -16,29 +15,20 @@ namespace Forbes
         [Header("DamageText")]
         public GameObject DamageTextPrefab;
 
-        int damageTaken;
-        float nextPainTime;
-        [SerializeField] float nextPainTimeout = 1.5f;
-
-        Vector3 m_InitPosition;
-
-        [SerializeField]
+        int m_DamageTaken;
+        float m_NextPainTime;
+        float m_NextPainTimeout = 1.5f;
 
         private void OnEnable()
         {
-            damageTaken = 0;
-        }
-
-        void Start()
-        {
-            m_InitPosition = transform.position;
+            m_DamageTaken = 0;
         }
 
         public float HitPointsRemaining
         {
             get
             {
-                return hitPoints - damageTaken;
+                return m_HitPoints - m_DamageTaken;
             }
         }
 
@@ -50,34 +40,38 @@ namespace Forbes
             }
         }
 
-        public virtual void TakeDamage(int amount, GameObject _damageOwner)
+        public virtual void TakeDamage(int amount)
         {
             if (!IsAlive)
                 return;
 
-            damageTaken += amount;
+            m_DamageTaken += amount;
 
-            if (Time.time > nextPainTime)
-            {
-                nextPainTime = Time.time + nextPainTimeout;
-
-                if (SoundPain != null && HitPointsRemaining > 0)
-                    AudioSource.PlayClipAtPoint(SoundPain, transform.position);
-            }
+            this.PlayPain();
 
             if (OnDamageReceived != null)
                 OnDamageReceived();
 
-            // Target killed
             if (HitPointsRemaining <= 0)
             {
                 this.Die();
             }
         }
 
+        private void PlayPain()
+        {
+            if (Time.time > m_NextPainTime)
+            {
+                m_NextPainTime = Time.time + m_NextPainTimeout;
+
+                if (SoundPain != null && HitPointsRemaining > 0)
+                    AudioSource.PlayClipAtPoint(SoundPain, transform.position);
+            }
+        }
+
         public virtual void Heal(int amount)
         {
-            damageTaken -= amount;
+            m_DamageTaken -= amount;
         }
 
         public virtual void Die()
@@ -85,12 +79,13 @@ namespace Forbes
             if (SoundDie != null)
                 AudioSource.PlayClipAtPoint(SoundDie, transform.position);
 
-            damageTaken = hitPoints;
+            m_DamageTaken = m_HitPoints;
 
-            GameManager.Instance.Spawner.Despawn(this.gameObject);
+            GameManager.Spawner.Despawn(this.gameObject);
 
             if (OnDeath != null)
                 OnDeath();
         }
+
     }
 }

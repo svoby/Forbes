@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using Forbes.SinglePlayer;
 
-namespace Forbes
+namespace Forbes.SinglePlayer
 {
     [RequireComponent(typeof(PhysicX))]
     public class Projectile : MonoBehaviour, IProjectile
@@ -27,7 +26,6 @@ namespace Forbes
         public GameObject Target { get { return m_target; } set { m_target = value; } }
 
         private PhysicX PhysicX;
-        private float m_FixDelayTime = 0;
 
         void Start()
         {
@@ -55,7 +53,7 @@ namespace Forbes
                 var destructable = _hitInfo.collider.GetComponent<Destructable>();
                 if (destructable != null)
                 {
-                    destructable.TakeDamage(Damage, DamageOwner);
+                    destructable.TakeDamage(Damage);
                 }
                 else
                 {
@@ -77,9 +75,9 @@ namespace Forbes
                 Vector3 destination = _hitInfo.point + _hitInfo.normal * 0.005f;
                 Quaternion rotation = Quaternion.LookRotation(_hitInfo.normal) * Quaternion.Euler(0, 180f, 0);
 
-                GameObject hole = GameManager.Instance.Spawner.Spawn(ProjectileHolePrefab, destination, rotation);
+                GameObject hole = GameManager.Spawner.Spawn(ProjectileHolePrefab, destination, rotation);
                 GameManager.Instance.Timer.Add(() =>
-                    GameManager.Instance.Spawner.Despawn(hole, true), 3f);
+                     GameManager.Spawner.Despawn(hole), 3f);
             }
         }
 
@@ -87,12 +85,12 @@ namespace Forbes
         {
             if (ExplosionPrefab != null)
             {
-                GameObject expl = GameManager.Instance.Spawner.Spawn(ExplosionPrefab, transform.position, transform.rotation);
+                GameObject expl = GameManager.Spawner.Spawn(ExplosionPrefab, transform.position, transform.rotation);
                 GameManager.Instance.Timer.Add(() =>
-                    GameManager.Instance.Spawner.Despawn(expl, true), 3f);
+                    GameManager.Spawner.Despawn(expl), 3f);
             }
 
-            GameManager.Instance.Spawner.Despawn(gameObject, true);
+            GameManager.Spawner.Despawn(gameObject);
         }
     }
 }

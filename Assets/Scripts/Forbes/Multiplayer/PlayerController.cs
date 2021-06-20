@@ -8,6 +8,7 @@ namespace Forbes.Multiplayer
 {
     [RequireComponent(typeof(MonsterController))]
     [RequireComponent(typeof(NetworkObject))]
+    [RequireComponent(typeof(IInputType))]
     public class PlayerController : NetworkBehaviour, IPlayerController
     {
         // Crosshair
@@ -63,7 +64,7 @@ namespace Forbes.Multiplayer
                     {
                         Horizontal = InputFrame.Horizontal,
                         Vertical = InputFrame.Vertical,
-                        Jump = InputFrame.Jump,
+                        Jump = false,
                         Fire = InputFrame.Fire,
                         Rotation = InputFrame.Rotation
                     });
