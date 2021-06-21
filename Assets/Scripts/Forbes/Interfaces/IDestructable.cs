@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Forbes.Damage
 {
     public interface IDestructable

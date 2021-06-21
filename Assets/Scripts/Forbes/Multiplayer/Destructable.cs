@@ -10,12 +10,13 @@ namespace Forbes.Multiplayer
     {
         NetworkVariableInt Health = new NetworkVariableInt(100);
 
-        public Text Text;
+        public Text UIHealth;
 
         void OnHealth(int oldValue, int newValue)
         {
-            Text.text = newValue.ToString();
-            TakeDamage(oldValue - newValue);
+            UIHealth.text = newValue.ToString();
+            if (Health.Value <= 0)
+                GameManager.Spawner.Despawn(gameObject);
         }
 
         void OnEnable()
@@ -24,7 +25,7 @@ namespace Forbes.Multiplayer
             Health.OnValueChanged += OnHealth;
 
             if (IsClient && IsOwner)
-                Text.text = Health.Value.ToString();
+                UIHealth.text = Health.Value.ToString();
         }
 
         void OnDisable()
@@ -42,17 +43,20 @@ namespace Forbes.Multiplayer
 
             if (IsLocalPlayer)
                 if (Forbes.SinglePlayer.GameManager.Instance.InputController.Key1)
-                    Health.Value -= 50;
+                    this.TakeDamage(50);
         }
 
         public void TakeDamage(int amount)
         {
-            if (Health.Value <= 0)
-                Forbes.SinglePlayer.GameManager.Spawner.Despawn(gameObject);
+            if (!IsServer) return;
+
+            Health.Value -= amount;
         }
 
         public void Heal(int amount)
         {
+            if (!IsServer) return;
+
             Health.Value += amount;
         }
     }

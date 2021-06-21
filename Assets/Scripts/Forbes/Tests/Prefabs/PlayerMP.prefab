@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 1818199523}
   - component: {fileID: 1818199522}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -444,7 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892ea2b9dd318403cb751ab420a03d7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Text: {fileID: 1818199522}
+  UIHealth: {fileID: 1818199522}
 --- !u!114 &3344857322669438367
 MonoBehaviour:
   m_ObjectHideFlags: 0
