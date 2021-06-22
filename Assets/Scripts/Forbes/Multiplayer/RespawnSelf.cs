@@ -11,16 +11,17 @@ namespace Forbes.Multiplayer
         Vector3 m_InitPosition;
         Quaternion m_InitRotation;
 
-        void Awake()
+        void OnDisable()
         {
-            m_InitPosition = transform.position;
-            m_InitRotation = transform.rotation;
+            transform.position = Vector3.zero;
+            transform.rotation = Quaternion.identity;
         }
 
         public void Despawn()
         {
             if (RespawnTime > 0)
-                Forbes.SinglePlayer.GameManager.Instance.Timer.Add(() => GameManager.Spawner.Spawn(gameObject, m_InitPosition, m_InitRotation), RespawnTime);
+                Forbes.SinglePlayer.GameManager.Instance.Timer.Add(() =>
+                    GameManager.Spawner.Spawn(NetworkObject.PrefabHash, Vector3.zero, Quaternion.identity), RespawnTime);
         }
     }
 }

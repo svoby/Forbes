@@ -1,14 +1,32 @@
 using UnityEngine;
 using MLAPI;
-//using MLAPI.Exte
 
 namespace Forbes.Multiplayer
 {
-  //  static string s_ObjectPoolTag = "ObjectPool";
-   // NetworkObjectPool m_ObjectPool;
-
     public class Spawner : NetworkBehaviour, ISpawner
     {
+        public void Spawn(ulong prefabHash, Vector3 pos, Quaternion rot)
+        {
+            // Get prefab from pool
+            var go = GameManager.ObjectPool.GetNetworkObject(prefabHash, pos, rot);
+
+            // Sub spawns
+            foreach (var c in go.GetComponents<ISpawn>())
+                c.Spawn();
+
+            // Network spawn
+            go.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.LocalClientId);
+        }
+
+        public void Despawn(GameObject go)
+        {
+            foreach (var c in go.GetComponents<IDespawn>())
+                c.Despawn();
+
+            go.GetComponent<NetworkObject>().Despawn();
+            GameManager.ObjectPool.ReturnNetworkObject(go.GetComponent<NetworkObject>());
+        }
+
         void LogSpawn()
         {
             ulong id = NetworkManager.Singleton.LocalClientId;
@@ -17,35 +35,5 @@ namespace Forbes.Multiplayer
             Debug.Log("PlyerObject IsLocalPlayer: " + po.IsLocalPlayer);
             Debug.Log("Spawn id:" + id);
         }
-
-        public GameObject Spawn(GameObject go, Vector3 pos, Quaternion rot)
-        {
-            GameObject clone = go;
-
-            if (!go.scene.isLoaded)
-                clone = Instantiate(go, pos, rot);
-
-            clone.SetActive(true);
-
-            foreach (var c in clone.GetComponents<ISpawn>())
-                c.Spawn();
-
-            if (IsServer)
-                clone.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.LocalClientId);
-                //var go = m_ObjectPool.GetNetworkObject(NetworkObject.PrefabHash, transform.position + diff, Quaternion.identity);
-
-            return clone;
-        }
-
-        public void Despawn(GameObject go)
-        {
-            foreach (var c in go.GetComponents<IDespawn>())
-                c.Despawn();
-
-            go.SetActive(false);
-            go.GetComponent<NetworkObject>().Despawn();
-            //Destroy(go);
-        }
     }
 }
-

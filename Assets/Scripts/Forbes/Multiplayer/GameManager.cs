@@ -1,5 +1,6 @@
-using MLAPI;
 using UnityEngine;
+using MLAPI;
+using MLAPI.Extensions;
 
 namespace Forbes.Multiplayer
 {
@@ -62,6 +63,18 @@ namespace Forbes.Multiplayer
                     m_Spawner = new Spawner();
 
                 return m_Spawner;
+            }
+        }
+
+        private static NetworkObjectPool m_ObjectPool;
+        public static NetworkObjectPool ObjectPool
+        {
+            get
+            {
+                if (m_ObjectPool == null)
+                    m_ObjectPool = GameObject.FindWithTag("ObjectPool").GetComponent<NetworkObjectPool>();
+
+                return m_ObjectPool;
             }
         }
     }

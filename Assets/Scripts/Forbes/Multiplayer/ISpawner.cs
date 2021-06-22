@@ -4,7 +4,7 @@ namespace Forbes.Multiplayer
 {
     public interface ISpawner
     {
-        GameObject Spawn(GameObject go, Vector3 pos, Quaternion rot);
+        void Spawn(ulong playerHash, Vector3 pos, Quaternion rot);
         void Despawn(GameObject go);
     }
 }
