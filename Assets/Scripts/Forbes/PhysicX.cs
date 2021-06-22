@@ -65,7 +65,7 @@ namespace Forbes
                 {
                     if (UseLerp)
                     {
-                        //V.y = 0;
+                        V.y = 0; // Propably produces bug (with bounce)
                     }
                     else
                     {

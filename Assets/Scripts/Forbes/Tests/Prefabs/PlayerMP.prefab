@@ -350,7 +350,7 @@ MonoBehaviour:
   Mass: 2
   GroundHeight: 1
   JumpHeight: 2
-  UseLerp: 0
+  UseLerp: 1
   LerpStep: 1
   Bounce: 0
 --- !u!143 &4720796653174245501
