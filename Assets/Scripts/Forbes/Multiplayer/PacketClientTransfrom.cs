@@ -4,7 +4,7 @@ using MLAPI.Serialization;
 namespace Forbes.Multiplayer
 {
     [System.Serializable]
-    public class PacketClientTransfrom : INetworkSerializable
+    public class PacketToClient : INetworkSerializable
     {
         public Vector3 Position;
         public Vector3 V;

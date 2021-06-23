@@ -3,6 +3,7 @@ using MLAPI.Messaging;
 using UnityEngine;
 using Forbes.Inputs;
 using Forbes.Cameras;
+using System;
 
 namespace Forbes.Multiplayer
 {
@@ -33,7 +34,12 @@ namespace Forbes.Multiplayer
             }
         }
 
-        Forbes.Inputs.InputFrame InputFrame;
+        // Caches
+        InputFrame m_InputToServer = new InputFrame();
+        InputFrame m_InputToClient = new InputFrame();
+        InputFrame m_InputReceived = new InputFrame();
+        PacketToServer m_PacketToServer = new PacketToServer();
+        PacketToClient m_PacketToClient = new PacketToClient();
 
         void Awake()
         {
@@ -48,66 +54,65 @@ namespace Forbes.Multiplayer
 
         void Start()
         {
-            if (!IsLocalPlayer)
-                return;
-
-            Forbes.SinglePlayer.GameManager.Instance.LocalPlayer = this;
             m_LastPosition = transform.position;
+
+            if (IsLocalPlayer)
+                Forbes.SinglePlayer.GameManager.Instance.LocalPlayer = this;
         }
 
         void FixedUpdate()
         {
+            if (IsServer)
+                this.CorrectPosition(0.5f);
+
             if (IsLocalPlayer)
             {
-                InputFrame = Forbes.SinglePlayer.GameManager.Instance.InputController.GetInputFrame(gameObject);
-                MC.ApplyInputs(InputFrame);
+                m_InputToServer = Forbes.SinglePlayer.GameManager.Instance.InputController.GetInputFrame(gameObject);
+                MC.ApplyInputs(m_InputToServer);
 
-                if (IsServer && Vector3.Distance(m_LastPosition, transform.position) > 0.5f)
+                if (!IsServer) // IsClient & Owner?
                 {
-                    PacketToClientRpc(new PacketClientTransfrom
-                    {
-                        Position = transform.position,
-                        V = MC.PhysicX.V
-                    });
+                    m_PacketToServer.Horizontal = m_InputToServer.Horizontal;
+                    m_PacketToServer.Vertical = m_InputToServer.Vertical;
+                    m_PacketToServer.Jump = m_InputToServer.Jump;
+                    m_PacketToServer.Fire = m_InputToServer.Fire;
+                    m_PacketToServer.Rotation = m_InputToServer.Rotation;
 
-                    m_LastPosition = transform.position;
-                }
+                    PacketToServerRpc(m_PacketToServer);
+                };
+            }
+        }
 
-                if (!IsServer)
-                    PacketToServerRpc(new InputFrame
-                    {
-                        Horizontal = InputFrame.Horizontal,
-                        Vertical = InputFrame.Vertical,
-                        Jump = false,
-                        Fire = InputFrame.Fire,
-                        Rotation = InputFrame.Rotation
-                    });
+        private void CorrectPosition(float treshold)
+        {
+            if (Vector3.Distance(m_LastPosition, transform.position) > treshold)
+            {
+                m_LastPosition = transform.position;
+
+                m_PacketToClient.Position = transform.position;
+                m_PacketToClient.V = MC.PhysicX.V;
+
+                PacketToClientRpc(m_PacketToClient);
             }
         }
 
         [ServerRpc]
-        void PacketToServerRpc(InputFrame _inputFrame)
+        void PacketToServerRpc(PacketToServer input)
         {
-            MC.ApplyInputs(new InputFrame
-            {
-                Horizontal = _inputFrame.Horizontal,
-                Vertical = _inputFrame.Vertical,
-                Jump = _inputFrame.Jump,
-                Fire = _inputFrame.Fire,
-                Rotation = _inputFrame.Rotation
-            });
+            m_InputReceived.Horizontal = input.Horizontal;
+            m_InputReceived.Vertical = input.Vertical;
+            m_InputReceived.Jump = input.Jump;
+            m_InputReceived.Horizontal = input.Horizontal;
+            m_InputReceived.Fire = input.Fire;
+            m_InputReceived.Rotation = input.Rotation;
 
-            PacketToClientRpc(new PacketClientTransfrom
-            {
-                Position = transform.position,
-                V = MC.PhysicX.V
-            });
+            MC.ApplyInputs(m_InputReceived);
 
             // new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = new[] { NetworkManager.Singleton.ConnectedClientsList[i].ClientId } } });
         }
 
         [ClientRpc]
-        void PacketToClientRpc(PacketClientTransfrom packet)
+        void PacketToClientRpc(PacketToClient packet)
         {
             transform.position = packet.Position;
             MC.PhysicX.V = packet.V;

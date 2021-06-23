@@ -2,7 +2,7 @@ using MLAPI.Serialization;
 
 namespace Forbes.Multiplayer
 {
-    partial class InputFrame : Forbes.Inputs.InputFrame, INetworkSerializable
+    partial class PacketToServer : Forbes.Inputs.InputFrame, INetworkSerializable
     {
         public void NetworkSerialize(NetworkSerializer serializer)
         {
