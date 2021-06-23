@@ -15,6 +15,7 @@ namespace Forbes.Multiplayer
                 c.Spawn();
 
             // Network spawn
+            //go.GetComponent<NetworkObject>().Spawn();
             go.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.LocalClientId);
         }
 

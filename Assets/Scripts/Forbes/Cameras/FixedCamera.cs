@@ -5,7 +5,7 @@ namespace Forbes.Cameras
     public class FixedCamera : ICamera
     {
         Vector3 m_CameraInitPosition;
-        public float CameraSmooth = 5f;
+        public float CameraSmooth = 0;
         private Camera _camera;
 
         public FixedCamera()

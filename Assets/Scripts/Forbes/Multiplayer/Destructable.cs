@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using MLAPI;
 using MLAPI.NetworkVariable;
-using UnityEngine.UI;
 
 namespace Forbes.Multiplayer
 {
@@ -14,8 +14,10 @@ namespace Forbes.Multiplayer
 
         void OnHealth(int oldValue, int newValue)
         {
-            UIHealth.text = newValue.ToString();
-            if (Health.Value <= 0)
+            if (IsLocalPlayer)
+                UIHealth.text = newValue.ToString();
+
+            if (Health.Value <= 0 && IsServer)
                 GameManager.Spawner.Despawn(gameObject);
         }
 
@@ -24,7 +26,7 @@ namespace Forbes.Multiplayer
             Health.Value = 100;
             Health.OnValueChanged += OnHealth;
 
-            if (IsClient && IsOwner)
+            if (IsLocalPlayer)
                 UIHealth.text = Health.Value.ToString();
         }
 
@@ -38,12 +40,23 @@ namespace Forbes.Multiplayer
             if (Health.Value <= 0)
                 return;
 
-            if (!IsServer)
-                return;
-
-            if (IsLocalPlayer)
+            // Despawn server
+            if (IsServer && IsLocalPlayer)
+            {
                 if (Forbes.SinglePlayer.GameManager.Instance.InputController.Key1)
                     this.TakeDamage(50);
+
+                return;
+            }
+
+            // Despawn client
+            if (!IsServer && IsLocalPlayer)
+            {
+                if (Forbes.SinglePlayer.GameManager.Instance.InputController.Key1)
+                    this.TakeDamage(50);
+
+                return;
+            }
         }
 
         public void TakeDamage(int amount)

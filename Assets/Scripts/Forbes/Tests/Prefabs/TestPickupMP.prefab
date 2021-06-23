@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8300384152571493926}
   - component: {fileID: 723907038689107931}
   - component: {fileID: 60896456636224285}
+  - component: {fileID: 9156211326213864155}
   m_Layer: 0
   m_Name: TestPickupMP
   m_TagString: Untagged
@@ -140,3 +141,15 @@ MonoBehaviour:
   PrefabHashGenerator: TestPickupMP
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
+--- !u!114 &9156211326213864155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640521136006036423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16f9af1cb320b4d3b9fe82726bb614ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

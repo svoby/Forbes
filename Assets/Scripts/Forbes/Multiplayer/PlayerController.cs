@@ -19,6 +19,8 @@ namespace Forbes.Multiplayer
 
         #endregion
 
+        Vector3 m_LastPosition;
+
         // Monster controller
         MonsterController m_MC;
         public MonsterController MC
@@ -50,6 +52,7 @@ namespace Forbes.Multiplayer
                 return;
 
             Forbes.SinglePlayer.GameManager.Instance.LocalPlayer = this;
+            m_LastPosition = transform.position;
         }
 
         void FixedUpdate()
@@ -59,8 +62,19 @@ namespace Forbes.Multiplayer
                 InputFrame = Forbes.SinglePlayer.GameManager.Instance.InputController.GetInputFrame(gameObject);
                 MC.ApplyInputs(InputFrame);
 
+                if (IsServer && Vector3.Distance(m_LastPosition, transform.position) > 0.5f)
+                {
+                    PacketToClientRpc(new PacketClientTransfrom
+                    {
+                        Position = transform.position,
+                        V = MC.PhysicX.V
+                    });
+
+                    m_LastPosition = transform.position;
+                }
+
                 if (!IsServer)
-                    SubmitInputRequestServerRpc(new InputFrame
+                    PacketToServerRpc(new InputFrame
                     {
                         Horizontal = InputFrame.Horizontal,
                         Vertical = InputFrame.Vertical,
@@ -72,7 +86,7 @@ namespace Forbes.Multiplayer
         }
 
         [ServerRpc]
-        void SubmitInputRequestServerRpc(InputFrame _inputFrame)
+        void PacketToServerRpc(InputFrame _inputFrame)
         {
             MC.ApplyInputs(new InputFrame
             {
@@ -82,6 +96,21 @@ namespace Forbes.Multiplayer
                 Fire = _inputFrame.Fire,
                 Rotation = _inputFrame.Rotation
             });
+
+            PacketToClientRpc(new PacketClientTransfrom
+            {
+                Position = transform.position,
+                V = MC.PhysicX.V
+            });
+
+            // new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = new[] { NetworkManager.Singleton.ConnectedClientsList[i].ClientId } } });
+        }
+
+        [ClientRpc]
+        void PacketToClientRpc(PacketClientTransfrom packet)
+        {
+            transform.position = packet.Position;
+            MC.PhysicX.V = packet.V;
         }
     }
 }
