@@ -6,10 +6,35 @@ namespace Forbes.Multiplayer
 {
     public class GameManager : MonoBehaviour
     {
+        private static Spawner m_Spawner;
+        public static Spawner Spawner
+        {
+            get
+            {
+                if (m_Spawner == null)
+                    m_Spawner = new Spawner();
+
+                return m_Spawner;
+            }
+        }
+
+        private static NetworkObjectPool m_ObjectPool;
+        public static NetworkObjectPool ObjectPool
+        {
+            get
+            {
+                if (m_ObjectPool == null)
+                    m_ObjectPool = GameObject.FindWithTag("ObjectPool").GetComponent<NetworkObjectPool>();
+
+                return m_ObjectPool;
+            }
+        }
+
         void OnGUI()
         {
             GUI.color = Color.white;
             GUILayout.BeginArea(new Rect(10, 10, 300, 300));
+
             if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
             {
                 StartButtons();
@@ -34,45 +59,6 @@ namespace Forbes.Multiplayer
             GUI.color = Color.black;
             GUILayout.Label("Mode: " + (NetworkManager.Singleton.IsHost ? "Host" : NetworkManager.Singleton.IsServer ? "Server" : "Client"));
             GUILayout.Label("LocalClientId: " + NetworkManager.Singleton.LocalClientId);
-        }
-
-        static void SubmitNewPosition()
-        {
-            if (GUILayout.Button(NetworkManager.Singleton.IsServer ? "Move" : "Request Position Change"))
-            {
-                if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
-                {
-                    // var player = networkedClient.PlayerObject.GetComponent<HelloWorldPlayer>();
-                    // if (player)
-                    // {
-                    //     player.Move();
-                    // }
-                }
-            }
-        }
-
-        private static Spawner m_Spawner;
-        public static Spawner Spawner
-        {
-            get
-            {
-                if (m_Spawner == null)
-                    m_Spawner = new Spawner();
-
-                return m_Spawner;
-            }
-        }
-
-        private static NetworkObjectPool m_ObjectPool;
-        public static NetworkObjectPool ObjectPool
-        {
-            get
-            {
-                if (m_ObjectPool == null)
-                    m_ObjectPool = GameObject.FindWithTag("ObjectPool").GetComponent<NetworkObjectPool>();
-
-                return m_ObjectPool;
-            }
         }
     }
 }

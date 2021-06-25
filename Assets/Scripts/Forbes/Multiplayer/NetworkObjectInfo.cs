@@ -18,5 +18,6 @@ public class NetworkObjectInfo : NetworkBehaviour
         GUI.Label(new Rect(pos.x, Screen.height - pos.y + 60, 500, 30), "IsOwnedByServer: " + no.IsOwnedByServer);
         GUI.Label(new Rect(pos.x, Screen.height - pos.y + 75, 500, 30), "IsOwner: " + no.IsOwner);
         GUI.Label(new Rect(pos.x, Screen.height - pos.y + 90, 500, 30), "OwnerClientId: " + no.OwnerClientId);
+        GUI.Label(new Rect(pos.x, Screen.height - pos.y + 105, 500, 30), "NetworkObjectId: " + no.NetworkObjectId);
     }
 }

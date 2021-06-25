@@ -63,7 +63,7 @@ namespace Forbes.Multiplayer
         void FixedUpdate()
         {
             if (IsServer)
-                this.CorrectPosition(0.5f);
+                this.CorrectPosition(1.5f);
 
             if (IsLocalPlayer)
             {

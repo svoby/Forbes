@@ -40,22 +40,26 @@ namespace Forbes.Multiplayer
             if (Health.Value <= 0)
                 return;
 
-            // Despawn server
             if (IsServer && IsLocalPlayer)
             {
                 if (Forbes.SinglePlayer.GameManager.Instance.InputController.Key1)
-                    this.TakeDamage(50);
+                    this.TakeDamage(100);
 
-                return;
+                if (Forbes.SinglePlayer.GameManager.Instance.InputController.Key2)
+                    this.KillAllClients();
             }
+        }
 
-            // Despawn client
-            if (!IsServer && IsLocalPlayer)
+        private void KillAllClients()
+        {
+            var list = NetworkManager.Singleton.ConnectedClientsList;
+            for (int i = 0; i < list.Count; i++)
             {
-                if (Forbes.SinglePlayer.GameManager.Instance.InputController.Key1)
-                    this.TakeDamage(50);
+                if (list[i].ClientId == NetworkManager.Singleton.LocalClientId)
+                    continue;
 
-                return;
+                GameObject go = list[i].PlayerObject.gameObject;
+                GameManager.Spawner.Despawn(go);
             }
         }
 

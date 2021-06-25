@@ -273,6 +273,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestPickupMP
       objectReference: {fileID: 0}
+    - target: {fileID: 7640521136006036423, guid: a5c366eba1ca549d09f4ced49e70d88e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7640521136006036442, guid: a5c366eba1ca549d09f4ced49e70d88e, type: 3}
       propertyPath: m_RootOrder
       value: 3

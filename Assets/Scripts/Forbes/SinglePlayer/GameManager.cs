@@ -92,6 +92,7 @@ namespace Forbes.SinglePlayer
             }
         }
 
+        // TODO, not instance
         private static Spawner m_Spawner;
         public static Spawner Spawner
         {

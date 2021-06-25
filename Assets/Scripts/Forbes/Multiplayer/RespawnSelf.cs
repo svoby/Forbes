@@ -21,7 +21,7 @@ namespace Forbes.Multiplayer
         {
             if (RespawnTime > 0)
                 Forbes.SinglePlayer.GameManager.Instance.Timer.Add(() =>
-                    GameManager.Spawner.Spawn(NetworkObject.PrefabHash, Vector3.zero, Quaternion.identity), RespawnTime);
+                    GameManager.Spawner.Spawn(NetworkObject.PrefabHash, transform.position, transform.rotation, GetComponent<NetworkObject>().OwnerClientId), RespawnTime);
         }
     }
 }
