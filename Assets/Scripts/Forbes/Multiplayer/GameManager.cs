@@ -1,5 +1,6 @@
 using UnityEngine;
 using MLAPI;
+using MLAPI.Spawning;
 using MLAPI.Extensions;
 
 namespace Forbes.Multiplayer
@@ -28,6 +29,25 @@ namespace Forbes.Multiplayer
 
                 return m_ObjectPool;
             }
+        }
+
+        void Start()
+        {
+            NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
+            NetworkManager.Singleton.OnServerStarted += () => 
+            {
+               ulong? prefabHash = NetworkSpawnManager.GetPrefabHashFromGenerator("PlayerMP");
+                GameManager.Spawner.Spawn(prefabHash, Vector3.zero, Quaternion.identity, NetworkManager.Singleton.LocalClientId);
+            };
+        }
+
+        private void ApprovalCheck(byte[] connectionData, ulong clientId, MLAPI.NetworkManager.ConnectionApprovedDelegate callback)
+        {
+            bool approve = true;
+            bool createPlayerObject = true;
+            ulong? prefabHash = NetworkSpawnManager.GetPrefabHashFromGenerator("PlayerMP");
+
+            callback(createPlayerObject, prefabHash, approve, Vector3.zero, Quaternion.identity);
         }
 
         void OnGUI()

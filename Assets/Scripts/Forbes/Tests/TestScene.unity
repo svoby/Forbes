@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 136828217}
   - component: {fileID: 136828216}
   m_Layer: 0
-  m_Name: MPGameManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -676,16 +676,16 @@ MonoBehaviour:
     AllowRuntimeSceneChanges: 0
     NetworkPrefabs:
     - Prefab: {fileID: 3833876888586213560, guid: 4f4a9ef489dba4b59926a1d64fd811ee, type: 3}
-      PlayerPrefab: 1
+      PlayerPrefab: 0
     PlayerPrefabHash:
       id: 0
-    CreatePlayerPrefab: 1
+    CreatePlayerPrefab: 0
     ReceiveTickrate: 64
     NetworkTickIntervalSec: 0.05
     MaxReceiveEventsPerTickRate: 500
     EventTickrate: 64
     ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
+    ConnectionApproval: 1
     ConnectionData: 
     EnableTimeResync: 0
     TimeResyncInterval: 30
@@ -704,9 +704,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: NullableBoolSerializable, ns: MLAPI.Configuration, asm: Unity.Multiplayer.MLAPI.Runtime}
-      data:
-        Value: 12396342775302104217
+      type: {class: , ns: , asm: }
 --- !u!4 &2129710973
 Transform:
   m_ObjectHideFlags: 0

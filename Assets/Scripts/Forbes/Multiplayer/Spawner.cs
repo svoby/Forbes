@@ -5,10 +5,10 @@ namespace Forbes.Multiplayer
 {
     public class Spawner : NetworkBehaviour, ISpawner
     {
-        public void Spawn(ulong prefabHash, Vector3 pos, Quaternion rot, ulong? clientId)
+        public void Spawn(ulong? prefabHash, Vector3 pos, Quaternion rot, ulong? clientId)
         {
             // Get prefab from pool
-            var go = GameManager.ObjectPool.GetNetworkObject(prefabHash, pos, rot);
+            var go = GameManager.ObjectPool.GetNetworkObject((ulong) prefabHash, pos, rot);
             var nwo = go.GetComponent<NetworkObject>();
 
             // Sub spawns
@@ -16,9 +16,12 @@ namespace Forbes.Multiplayer
                 c.Spawn();
 
             // Is nwo player object?
-            if (clientId != null) {
-                nwo.SpawnAsPlayerObject((ulong) clientId);
-            } else {
+            if (clientId != null)
+            {
+                nwo.SpawnAsPlayerObject((ulong)clientId);
+            }
+            else
+            {
                 nwo.Spawn();
             }
         }
